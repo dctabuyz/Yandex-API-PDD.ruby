@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'readline'
+include Readline
+require 'YandexPDD'
+
+token     = ''
+cert_file = ''
+
+f = open(ENV['HOME'] + '/.yandex_pdd_token')
+
+f.each do |line|
+
+    line.chomp!.strip!
+
+    token     = $1 if (line =~ /token\s*:\s*(\S+)/)
+    cert_file = $1 if (line =~ /cert_file\s*:\s*(.+)/)
+end
+
+f.close
+
+exit unless token
+
+user = ARGV[0] || ''
+yes  = ARGV[1] || ''
+
+while (0 == user.length) do
+
+    user = readline('username: ', true)
+end
+
+while (yes !~ /^yes|no$/i) do
+
+    yes = readline('are you sure? (yes/no): ', true)
+end
+
+exit if ('yes' != yes)
+
+pdd = Yandex::PDD::new( token, cert_file )
+
+exit unless pdd
+
+if pdd.delete_user(user)
+
+    puts 'user "' + user + '" deleted'
+else
+
+    puts 'error: ' + pdd.error[:code] + ' (' + pdd.error[:info] + ')'
+end

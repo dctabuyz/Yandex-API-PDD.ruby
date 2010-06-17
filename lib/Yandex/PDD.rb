@@ -424,7 +424,7 @@ private
 
     def is_response_ok
 
-        return get_node('/page/ok').first.nil?
+        return not get_node('/page/ok').first.nil?
     end
 
     alias is_response_ok? is_response_ok
