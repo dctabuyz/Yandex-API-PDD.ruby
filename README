@@ -1,4 +1,9 @@
-RUBY
+= Yandex::PDD
+
+* http://pdd.yandex.ru
+* http://pdd.yandex.ru/help
+
+= RUBY
 
     require 'rubygems'
     require 'YandexPDD'
@@ -26,24 +31,24 @@ RUBY
         end
     end
 
-COMMAND-LINE TOOLS
+= COMMAND LINE
 
     1. edit ~/.yandex_pdd (YAML)
 
-        cert_file: /path/to/ca-root-nss.crt
-
-        example.com:
-                token:     abcdefghijklmnopqrstuvwxyz01234567890abcdefghijklmnopqrs
+            cert_file: /path/to/ca-root-nss.crt
+           
+            example.com:
+                    token:     abcdefghijklmnopqrstuvwxyz01234567890abcdefghijklmnopqrs
 
     2. add users
 
-        $ pdd_adduser --domain example.com --user username --password secret
+            pdd_adduser --domain example.com --user username --password secret
 
     3. remove users
 
-        $ pdd_rmuser  --domain example.com --user username
+            pdd_rmuser  --domain example.com --user username
 
-TODO
+= TODO
 
-    * documentation
-    * tests
+* documentation
+* tests
