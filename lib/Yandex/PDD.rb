@@ -16,7 +16,7 @@ class PDD
 
     HTTP_ERROR          = 'HTTP_ERROR'
 
-    NOT_AUTHENTICATED   = 'NOT_AUTHENTICATED'
+    NOT_AUTHORIZED      = 'NOT_AUTHORIZED'
     INVALID_RESPONSE    = 'INVALID_RESPONSE'
     REQUEST_FAILED      = 'REQUEST_FAILED'
 
@@ -39,7 +39,8 @@ class PDD
     UNKNOWN_ERROR       = 'UNKNOWN_ERROR'
 
     ERR_R = {
-                'not authenticated'           => NOT_AUTHENTICATED,
+                'not authenticated'           => NOT_AUTHORIZED,
+                'not_authorized'              => NOT_AUTHORIZED,
                 'no_login'                    => INVALID_LOGIN,
                 'bad_login'                   => INVALID_LOGIN,
                 'no_user'                     => USER_NOT_FOUND,
@@ -67,8 +68,8 @@ class PDD
 
 	def initialize(token, cert_file=nil)
 
-		@token     = token
-		@cert_file = cert_file
+		@token     = token.to_s
+		@cert_file = cert_file.to_s
 		@timeout   = TIMEOUT
 	end
 
@@ -424,7 +425,7 @@ private
 
     def is_response_ok
 
-        return not get_node('/page/ok').first.nil?
+        return (not get_node('/page/ok').first.nil?)
     end
 
     alias is_response_ok? is_response_ok

@@ -1,29 +1,74 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'getoptlong'
+require 'yaml'
 require 'readline'
 include Readline
+
 require 'YandexPDD'
 
-token     = ''
-cert_file = ''
+def print_help
 
-f = open(ENV['HOME'] + '/.yandex_pdd_token')
-
-f.each do |line|
-
-    line.chomp!.strip!
-
-    token     = $1 if (line =~ /token\s*:\s*(\S+)/)
-    cert_file = $1 if (line =~ /cert_file\s*:\s*(.+)/)
+        puts 'pdd_adduser --domain example.com [--user <username>] [--password <secret>]'
+        exit
 end
 
-f.close
+def print_version
 
-exit unless token
+        puts 'pdd_adduser version 0.1'
+        exit
+end
 
-user = ARGV[0] || ''
-pass = ARGV[1] || ''
+def print_error(e)
+
+        puts e
+        exit
+end
+
+domain    = ''
+token     = ''
+cert_file = ''
+user      = ''
+pass      = ''
+
+config = open(ENV['HOME'] + '/.yandex_pdd') do |f|
+
+    YAML.load(f)
+end
+
+opt = GetoptLong.new(    ['--domain', '-d', GetoptLong::REQUIRED_ARGUMENT],
+                         ['--user',   '-u', GetoptLong::OPTIONAL_ARGUMENT],
+                         ['--pass',   '-p', GetoptLong::OPTIONAL_ARGUMENT],
+                         ['--help',         GetoptLong::NO_ARGUMENT],
+                         ['--version',      GetoptLong::NO_ARGUMENT]
+)
+
+opt.each_option do |name, arg|
+
+    case name
+
+    when '--domain'
+        domain = arg
+
+    when '--user'
+        user   = arg
+
+    when '--pass'
+        pass   = arg
+
+    when '--help'
+
+        print_help()
+
+    when '--version'
+
+        print_version()
+    end
+end
+
+print_error('domain not specified')                  unless (domain and domain.to_s.length > 0)
+print_error("no token found for domain `#{domain}'") unless (config[domain] and config[domain]['token']) 
 
 while (0 == user.length) do
 
@@ -35,14 +80,21 @@ while (0 == pass.length) do
     pass = readline('password: ', true)
 end
 
-pdd = Yandex::PDD::new( token, cert_file )
-
-exit unless pdd
+pdd = Yandex::PDD::new( config[domain]['token'], config['cert_file'] )
 
 if pdd.create_user(user, pass)
 
-    puts 'user "' + user + '" created'
+    print_error "user `#{user}' created"
 else
 
-    puts 'error: ' + pdd.error[:code] + ' (' + pdd.error[:info] + ')'
+    print_error "error: #{pdd.error[:code]} (#{pdd.error[:info]})"
 end
+
+__END__
+
+example ~/.yandex_pdd
+
+cert_file: /usr/local/share/certs/ca-root-nss.crt
+
+example.com:
+        token:     abcdefghijklmnopqrstuvwxyz01234567890abcdefghijklmnopqrs
