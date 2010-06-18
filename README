@@ -1,2 +1,49 @@
-TODO: documentation
-TOOD: tests
+RUBY
+
+    require 'rubygems'
+    require 'YandexPDD'
+
+    token = 'abcd...'
+
+    pdd = Yandex::PDD::new(token)
+
+    unless pdd.is_user_exists('test')
+
+        if pdd.create_user( 'test', 'secret-0123' )
+
+            puts 'user created'
+
+            if pdd.delete_user('test')
+
+                puts 'user created'
+            else
+
+                puts 'error: ' + pdd.error.code
+            end
+        else
+
+            puts 'error: ' + pdd.error.code
+        end
+    end
+
+COMMAND-LINE TOOLS
+
+    1. edit ~/.yandex_pdd (YAML)
+
+        cert_file: /path/to/ca-root-nss.crt
+
+        example.com:
+                token:     abcdefghijklmnopqrstuvwxyz01234567890abcdefghijklmnopqrs
+
+    2. add users
+
+        $ pdd_adduser --domain example.com --user username --password secret
+
+    3. remove users
+
+        $ pdd_rmuser  --domain example.com --user username
+
+TODO
+
+    * documentation
+    * tests
