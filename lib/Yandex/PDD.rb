@@ -14,54 +14,54 @@ class PDD
 
 	IMPORT_METHOD       = POP3
 
-    HTTP_ERROR          = 'HTTP_ERROR'
+	HTTP_ERROR          = 'HTTP_ERROR'
 
-    NOT_AUTHORIZED      = 'NOT_AUTHORIZED'
-    INVALID_RESPONSE    = 'INVALID_RESPONSE'
-    REQUEST_FAILED      = 'REQUEST_FAILED'
+	NOT_AUTHORIZED      = 'NOT_AUTHORIZED'
+	INVALID_RESPONSE    = 'INVALID_RESPONSE'
+	REQUEST_FAILED      = 'REQUEST_FAILED'
 
-    USER_NOT_FOUND      = 'USER_NOT_FOUND'
-    LOGIN_OCCUPIED      = 'LOGIN_OCCUPIED'
-    LOGIN_TOO_SHORT     = 'LOGIN_TOO_SHORT'
-    LOGIN_TOO_LONG      = 'LOGIN_TOO_LONG'
-    INVALID_LOGIN       = 'INVALID_LOGIN'
+	USER_NOT_FOUND      = 'USER_NOT_FOUND'
+	LOGIN_OCCUPIED      = 'LOGIN_OCCUPIED'
+	LOGIN_TOO_SHORT     = 'LOGIN_TOO_SHORT'
+	LOGIN_TOO_LONG      = 'LOGIN_TOO_LONG'
+	INVALID_LOGIN       = 'INVALID_LOGIN'
 
-    INVALID_PASSWORD    = 'INVALID_PASSWORD'
-    PASSWORD_TOO_SHORT  = 'PASSWORD_TOO_SHORT'
-    PASSWORD_TOO_LONG   = 'PASSWORD_TOO_LONG'
+	INVALID_PASSWORD    = 'INVALID_PASSWORD'
+	PASSWORD_TOO_SHORT  = 'PASSWORD_TOO_SHORT'
+	PASSWORD_TOO_LONG   = 'PASSWORD_TOO_LONG'
 
-    CANT_CREATE_ACCOUNT = 'CANT_CREATE_ACCOUNT'
-    USER_LIMIT_EXCEEDED = 'USER_LIMIT_EXCEEDED'
+	CANT_CREATE_ACCOUNT = 'CANT_CREATE_ACCOUNT'
+	USER_LIMIT_EXCEEDED = 'USER_LIMIT_EXCEEDED'
 
-    NO_IMPORT_SETTINGS  = 'NO_IMPORT_SETTINGS'
+	NO_IMPORT_SETTINGS  = 'NO_IMPORT_SETTINGS'
 
-    SERVICE_ERROR       = 'SERVICE_ERROR'
-    UNKNOWN_ERROR       = 'UNKNOWN_ERROR'
+	SERVICE_ERROR       = 'SERVICE_ERROR'
+	UNKNOWN_ERROR       = 'UNKNOWN_ERROR'
 
-    ERR_R = {
-                'not authenticated'           => NOT_AUTHORIZED,
-                'not_authorized'              => NOT_AUTHORIZED,
-                'no_login'                    => INVALID_LOGIN,
-                'bad_login'                   => INVALID_LOGIN,
-                'no_user'                     => USER_NOT_FOUND,
-                'not_found'                   => USER_NOT_FOUND,
-                'user_not_found'              => USER_NOT_FOUND,
-                'no such user registered'     => USER_NOT_FOUND,
-                'occupied'                    => LOGIN_OCCUPIED,
-                'login_short'                 => LOGIN_TOO_SHORT,
-                'badlogin_length'             => LOGIN_TOO_LONG,
-                'passwd-badpasswd'            => INVALID_PASSWORD,
-                'passwd-tooshort'             => PASSWORD_TOO_SHORT,
-                'passwd-toolong'              => PASSWORD_TOO_LONG,
-                'hundred_users_limit'         => USER_LIMIT_EXCEEDED,
-
-                'no-passwd_cryptpasswd'       => INVALID_PASSWORD,
-                'cant_create_account'         => CANT_CREATE_ACCOUNT,
-
-                'no_import_settings'          => NO_IMPORT_SETTINGS,
-                'no import info on this user' => USER_NOT_FOUND,
-                'unknown'                     => REQUEST_FAILED,
-    }
+	ERR_R = {
+	            'not authenticated'           => NOT_AUTHORIZED,
+	            'not_authorized'              => NOT_AUTHORIZED,
+	            'no_login'                    => INVALID_LOGIN,
+	            'bad_login'                   => INVALID_LOGIN,
+	            'no_user'                     => USER_NOT_FOUND,
+	            'not_found'                   => USER_NOT_FOUND,
+	            'user_not_found'              => USER_NOT_FOUND,
+	            'no such user registered'     => USER_NOT_FOUND,
+	            'occupied'                    => LOGIN_OCCUPIED,
+	            'login_short'                 => LOGIN_TOO_SHORT,
+	            'badlogin_length'             => LOGIN_TOO_LONG,
+	            'passwd-badpasswd'            => INVALID_PASSWORD,
+	            'passwd-tooshort'             => PASSWORD_TOO_SHORT,
+	            'passwd-toolong'              => PASSWORD_TOO_LONG,
+	            'hundred_users_limit'         => USER_LIMIT_EXCEEDED,
+	
+	            'no-passwd_cryptpasswd'       => INVALID_PASSWORD,
+	            'cant_create_account'         => CANT_CREATE_ACCOUNT,
+	
+	            'no_import_settings'          => NO_IMPORT_SETTINGS,
+	            'no import info on this user' => USER_NOT_FOUND,
+	            'unknown'                     => REQUEST_FAILED,
+	}
 
 	attr_accessor :request, :response
 	attr_reader   :error,   :http_error
@@ -88,7 +88,7 @@ class PDD
 		return unknown_error()
 	end
 
-    alias is_user_exists? is_user_exists
+	alias is_user_exists? is_user_exists
 
 	def create_user(login, password, is_encrypted=false)
 
@@ -96,11 +96,11 @@ class PDD
 
 		if (is_encrypted)
 
-			url += 'reg_user_crypto.xml?token=' + @token +  '&login='    + quote_encode(login)     +
-														    '&password=' + quote_encode(password)
+			url += 'reg_user_crypto.xml?token=' + @token +  '&login='      + quote_encode(login)   +
+			                                                '&password='   + quote_encode(password)
 		else
 			url += 'reg_user_token.xml?token='  + @token +  '&u_login='    + quote_encode(login)   +
-															'&u_password=' + quote_encode(password)
+			                                                '&u_password=' + quote_encode(password)
 		end
 
 		return nil unless make_request(url)
@@ -120,13 +120,13 @@ class PDD
 
 	def update_user(login, data)
 
-		url = API_URL + 'edit_user.xml?token=' + @token    + '&login='    + quote_encode(login)           +
-															 '&password=' + quote_encode(data[:password]) +
-															 '&iname='    + quote_encode(data[:iname]   ) +
-															 '&fname='    + quote_encode(data[:fname]   ) +
-															 '&sex='      + quote_encode(data[:sex]     ) +
-															 '&hintq='    + quote_encode(data[:hintq]   ) +
-															 '&hinta='    + quote_encode(data[:hinta]   ) 
+		url = API_URL + 'edit_user.xml?token=' + @token + '&login='    + quote_encode(login)           + 
+                                                                  '&password=' + quote_encode(data[:password]) +
+		                                                  '&iname='    + quote_encode(data[:iname]   ) +
+		                                                  '&fname='    + quote_encode(data[:fname]   ) +
+		                                                  '&sex='      + quote_encode(data[:sex]     ) +
+		                                                  '&hintq='    + quote_encode(data[:hintq]   ) +
+		                                                  '&hinta='    + quote_encode(data[:hinta]   ) 
 		return nil unless make_request(url)
 
 		if ( uid = get_node_attr('/page/ok/@uid') )
@@ -167,8 +167,8 @@ class PDD
 		save_copy = (save_copy and not 'no' == save_copy) ? 'yes' : 'no'
 
 		url = API_URL + 'set_forward.xml?token=' + @token + '&login='   + quote_encode(login)   +
-															'&address=' + quote_encode(address) +
-															'&copy='    + save_copy
+		                                                    '&address=' + quote_encode(address) +
+		                                                    '&copy='    + save_copy
 
 		return nil unless make_request(url)
 
@@ -205,7 +205,7 @@ class PDD
 	def get_user_list(page=1, per_page=100)
 
 		url = API_URL + 'get_domain_users.xml?token=' + @token + '&page=%20'  + quote_encode(page)     +  # HACK XXX
-																 '&per_page=' + quote_encode(per_page)
+		                                                         '&per_page=' + quote_encode(per_page)
 
 		return nil unless make_request(url)
 
@@ -232,12 +232,12 @@ class PDD
 
 	def prepare_import(server, data={})
 
-        data[:method] = 'pop3' unless ( data[:method] and data[:method] !~ /^pop3|imap$/i )
+		data[:method] = 'pop3' unless ( data[:method] and data[:method] !~ /^pop3|imap$/i )
 
 		url = API_URL + 'set_domain.xml?token=' + @token  + '&ext_serv=' + server +
                                                             '&method='   + data[:method]
 
-        url += '&ext_port=' + data[:port]     if ( data[:port] )   
+		url += '&ext_port=' + data[:port]     if ( data[:port] )   
 		url += '&callback=' + data[:callback] if ( data[:callback] )
 
 		url += '&isssl=no' unless ( data[:use_ssl] )
@@ -251,8 +251,8 @@ class PDD
 	def start_import(login, data)
 
 		url = API_URL + 'start_import.xml?token=' + @token + '&login='     + quote_encode(login)          +
-															 '&ext_login=' + quote_encode(data[:login])   +
-															 '&password='  + quote_encode(data[:password])
+		                                                     '&ext_login=' + quote_encode(data[:login])   +
+		                                                     '&password='  + quote_encode(data[:password])
 
 		return nil unless make_request(url)
 
@@ -265,12 +265,12 @@ class PDD
 		data[:save_copy]   = ( data[:save_copy] ) ? 'yes' : '0'
 
 		url = API_URL + 'reg_and_imp.xml?token=' + @token         +
-						'&login='        + quote_encode(login)    +
-						'&inn_password=' + quote_encode(password) +
-						'&ext_login='    + quote_encode(data[:login])      +
-						'&ext_password=' + quote_encode(data[:password])   +
-						'&fwd_email='    + quote_encode(data[:forward_to]) +
-						'&fwd_copy='     + quote_encode(data[:save_copy])
+		                '&login='        + quote_encode(login)    +
+		                '&inn_password=' + quote_encode(password) +
+		                '&ext_login='    + quote_encode(data[:login])      +
+		                '&ext_password=' + quote_encode(data[:password])   +
+		                '&fwd_email='    + quote_encode(data[:forward_to]) +
+		                '&fwd_copy='     + quote_encode(data[:save_copy])
 
 		return nil unless make_request(url)
 
@@ -300,10 +300,10 @@ class PDD
 #		data[:login] ||= login
 #	
 #		my $url = API_URL + 'import_imap.xml?token=' + @token + '&login='           + quote_encode(login)           +
-#																'&ext_login='       + quote_encode(data[:login])    +
-##																'&int_password='    + quote_encode(password)        +
-#																'&ext_password='    + quote_encode(data[:password]) +
-#																'&copy_one_folder=' + quote_encode(data[:folder])
+#		                                                        '&ext_login='       + quote_encode(data[:login])    +
+##		                                                        '&int_password='    + quote_encode(password)        +
+#		                                                        '&ext_password='    + quote_encode(data[:password]) +
+#		                                                        '&copy_one_folder=' + quote_encode(data[:folder])
 #		return nil unless make_request(url)
 #
 #		return true if is_response_ok
@@ -356,10 +356,10 @@ private
 		return a.value
 	end
 
-    def identify_error(error)
+	def identify_error(error)
 
             return ERR_R[ error.split(',').first ] || REQUEST_FAILED
-    end
+	end
 
 	def set_error(code, info, is_http=false)
 
@@ -423,12 +423,12 @@ private
 		return nil
 	end
 
-    def is_response_ok
+	def is_response_ok
 
-        return (not get_node('/page/ok').first.nil?)
-    end
+		return (not get_node('/page/ok').first.nil?)
+	end
 
-    alias is_response_ok? is_response_ok
+	alias is_response_ok? is_response_ok
 
 	def make_request(url)
 
