@@ -8,5 +8,5 @@ task :build do
 end
  
 #task :release => :build do
-#  system "gem push YandexPDD-#{YandexPDD::VERSION}"
+#  system "gem push YandexPDD-#{Yandex::PDD::VERSION}"
 #end
