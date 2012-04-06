@@ -2,6 +2,8 @@ module Yandex
 
 class PDD
 
+	VERSION   = '0.0.1'
+
 	API_URL   = 'https://pddimp.yandex.ru/'
 
 	TIMEOUT   = 10
@@ -235,7 +237,7 @@ class PDD
 		data[:method] = 'pop3' unless ( data[:method] and data[:method] !~ /^pop3|imap$/i )
 
 		url = API_URL + 'set_domain.xml?token=' + @token  + '&ext_serv=' + server +
-                                                            '&method='   + data[:method]
+		                                                    '&method='   + data[:method]
 
 		url += '&ext_port=' + data[:port]     if ( data[:port] )   
 		url += '&callback=' + data[:callback] if ( data[:callback] )

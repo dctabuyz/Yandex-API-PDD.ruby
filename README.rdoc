@@ -2,6 +2,7 @@
 
 * http://pdd.yandex.ru
 * http://pdd.yandex.ru/help
+* http://api.yandex.ru/pdd
 
 = RUBY
 
