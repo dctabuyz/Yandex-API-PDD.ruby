@@ -36,4 +36,10 @@ spec = Gem::Specification.new do |s|
 	s.requirements << "make utility"
 end
 
-Gem::Builder.new(spec).build if __FILE__ == $0
+if __FILE__ == $0
+
+	Gem::Builder.new(spec).build
+else
+
+	spec
+end
