@@ -21,6 +21,10 @@ rescue LoadError
 	rescue LoadError
 
 		raise libxml_install_exception unless libxml_install_exception.nil?
+
+		# this should never happen
+		raise Gem::InstallError, "something is wrong...\n\n" +
+		                         "this should never happen, please report to author\n\n"
 	end
 end
 
