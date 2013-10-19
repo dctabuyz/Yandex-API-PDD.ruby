@@ -15,20 +15,20 @@
 
     unless pdd.is_user_exists('test')
 
-        if pdd.create_user( 'test', 'secret-0123' )
+        unless pdd.create_user( 'test', 'secret-0123' )
+
+            puts 'error: ' + pdd.error.code
+        else
 
             puts 'user created'
 
             if pdd.delete_user('test')
 
-                puts 'user created'
+                puts 'user deleted'
             else
 
                 puts 'error: ' + pdd.error.code
             end
-        else
-
-            puts 'error: ' + pdd.error.code
         end
     end
 
